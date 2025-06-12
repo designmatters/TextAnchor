@@ -1,6 +1,6 @@
 # TextAnchor
 
-Manage annotations on top of plain-text files.
+Library to manage annotations on top of plain-text files.
 
 **TextAnchor** helps preserve and track annotations even when the underlying text changes — useful for qualitative coding and research.
 
