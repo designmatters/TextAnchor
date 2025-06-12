@@ -2,7 +2,7 @@
 
 Manage annotations in plain-text files.
 
-![Demo screenshot](images/DemoApp.png)
+![Demo screenshot](Images/DemoApp.png)
 
 **TextAnchor** helps preserve and track annotations even when the underlying text changes — useful for qualitative coding and research.
 
