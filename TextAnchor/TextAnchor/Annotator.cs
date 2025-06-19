@@ -1,10 +1,13 @@
+using System.Security.Cryptography;
+using System.Text;
+
 namespace TextAnchor;
 
 public class Annotator
 {
     private const int ContextLenght = 10;
 
-    private int Hash { get; set; }
+    private string Hash { get; set; }
     public List<Annotation> Annotations { get; set; } = new();
 
 
@@ -12,7 +15,7 @@ public class Annotator
     {
         if (start < 0 || end <= start || end > text.Length) return;
 
-        Hash = text.GetHashCode();
+        Hash = Sha256(text);
         var caption = text.Substring(start, end - start);
         var contextBefore = text.Substring(Math.Max(0, start - ContextLenght), Math.Min(ContextLenght, start));
         var contextAfter = text.Substring(end, Math.Min(ContextLenght, text.Length - end));
@@ -27,8 +30,9 @@ public class Annotator
 
     public void Edit(string newText)
     {
-        var newHash = newText.GetHashCode();
-        if (Hash == newHash) return;
+        var newHash = Sha256(newText);
+        if (Hash == newHash) 
+            return;
         Hash = newHash;
 
         var lostAnnotations = new List<Annotation>();
@@ -51,18 +55,18 @@ public class Annotator
                 continue;
 
             // The annotation is unedited but at a different location - try to match it via it's context
-            int surroundingLength = 3000000;
+            int surroundingLength = 100;
             int s = Math.Max(0, annotation.Start - surroundingLength);
             int l = Math.Min((annotation.End - annotation.Start) + 2 * surroundingLength, newText.Length - s);
             string surroundingText = newText.Substring(s, l);
-            
+
             var newStart = 0;
             var newPos =
                 surroundingText.IndexOf(annotation.ContextBefore + annotation.Caption + annotation.ContextAfter,
                     StringComparison.Ordinal);
-            
+
             newStart = newPos + annotation.ContextBefore.Length;
-            
+
             if (newPos == -1)
             {
                 newPos = surroundingText.IndexOf(annotation.ContextBefore + annotation.Caption,
@@ -94,5 +98,12 @@ public class Annotator
                 annotationsToRemove.Add(annotation);
             }
         }
+    }
+
+    private string Sha256(string input)
+    {
+        var bytes = Encoding.UTF8.GetBytes(input);
+        var hashBytes = SHA256.HashData(bytes);
+        return Convert.ToHexString(hashBytes);
     }
 }
