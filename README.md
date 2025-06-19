@@ -12,3 +12,4 @@ Created for use in [CodexLite](https://github.com/designmatters/CodexLite).
 
 - Unit tests
 - Implement diff-based editing instead of context-based search.
+- Try to implement smart annotation editing via tiny Embedding model.
