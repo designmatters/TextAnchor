@@ -41,15 +41,6 @@ public partial class MainWindow : Window
          _annotator.Add(TextInEditor, 83, 118);
          _annotator.Add(TextInEditor, 167, 188);
          _annotator.Add(TextInEditor, 294, 334);
-
-        // var builder = new StringBuilder();
-        // for (int i = 0; i < 10; i++)
-        // {
-        //     builder.Append("This is ");
-        //     _annotator.Add(builder.ToString(), i*8, i*8+4);
-        // }
-
-        //TextInEditor = builder.ToString();
     }
 
     private bool _suspendRendering = false;
